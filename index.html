@@ -1,0 +1,179 @@
+<!doctype html>
+<html>
+  <head>
+    <title>gorgansclock v0.01 alpha</title>
+    <!--Responsive meta tag thing-->
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/beercss@3.3.5/dist/cdn/beer.min.css"
+      rel="stylesheet"
+    />
+    <script
+      type="module"
+      src="https://cdn.jsdelivr.net/npm/beercss@3.3.5/dist/cdn/beer.min.js"
+    ></script>
+  </head>
+  <body class="dark">
+    <main class="responsive max">
+      <div class="page left active" id="settimerdiv">
+        <h3>Set a timer</h3>
+        <div class="">
+          <div class="row margin" style="width: 100%">
+            <div style="width: 45%" class="field label border">
+              <input type="text" id="mins" />
+              <label>Minutes</label>
+            </div>
+            <div style="width: 45%" class="field label border">
+              <input type="text" id="secs" />
+              <label>Seconds</label>
+            </div>
+          </div>
+          <button id="start" class="small-round margin">Start timer</button>
+        </div>
+      </div>
+      <div class="page left" id="timerdiv">
+        <button class="transparent circle" href="/" id="back">
+          <i>arrow_back</i>
+        </button>
+        <div class="space"></div>
+        <h1 class="relative center-align" id="timerText">--:--</h1>
+        <div class="medium-space"></div>
+        
+        <button id="pause" class="small-round margin center">
+            Pause/Resume
+          </button>
+      </div>
+    </main>
+    <script>
+      var timerPaused = false;
+      // When the user clicks start button
+      document.getElementById("start").onclick = function () {
+        // Get the values of the inputs
+        var mins = document.getElementById("mins").value;
+        var secs = document.getElementById("secs").value;
+        // If the values are not numbers
+        if (isNaN(mins) || isNaN(secs)) {
+          // Alert the user
+          alert("Please enter a number");
+        } else {
+          // If the values are numbers
+          // Convert the values to numbers
+          mins = Number(mins);
+          secs = Number(secs);
+          // If the values are not in the range
+          if (mins < 0 || mins > 59 || secs < 0 || secs > 59) {
+            // Alert the user
+            alert("Please enter a number between 0 and 59");
+          } else {
+            // If the values are in the range
+            // Convert the values to seconds
+            mins = mins * 60;
+            // Add the values together
+            var total = mins + secs;
+
+            // If the minutes are less than 10
+            if (mins < 10) {
+              // Add a 0 to the minutes
+              mins = "0" + mins;
+            }
+            // If the seconds are less than 10
+            if (secs < 10) {
+              // Add a 0 to the seconds
+              secs = "0" + secs;
+            }
+            // Set the timer text to the minutes and seconds
+            document.getElementById("timerText").innerHTML = mins + ":" + secs;
+            // Hide the set timer div
+            ui("#settimerdiv");
+            ui("#timerdiv");
+            // Start the timer
+            startTimer(total);
+          }
+        }
+      };
+      function startTimer(total) {
+        console.log("div hidden");
+        // Set the timer to the total
+        var timer = total;
+        console.log("timer set");
+        // Set the timer interval
+        var timerInterval = setInterval(function () {
+          console.log("interval started");
+          // If the timer is 0
+          if (timer == 0) {
+            var audio = new Audio("vineboom.mp3");
+            audio.volume = 0.4;
+            audio.play();
+            console.log("timer is 0");
+            // Stop the timer
+            clearInterval(timerInterval);
+            // hide the pause button
+            // by setting it's display to none
+            document.getElementById("pause").style.display = "none";
+            // Add the active class to the set timer div and remove it from the timer div
+            // Repeatedly play the vine boom sound
+            var vineBoom = setInterval(function () {
+              // Play the vine boom sound
+              var audio = new Audio("vineboom.mp3");
+              audio.volume = 0.4;
+              audio.play();
+              // set the timer text to red
+              document.getElementById("timerText").style.color = "red";
+              // wait half a second
+              setTimeout(function () {
+                // set the timer text to white
+                document.getElementById("timerText").style.color = "white";
+              }, 500);
+            }, 1000);
+          } else {
+            // If the timer is not 0
+            // Check if we're paused
+            if (timerPaused == true) {
+              // If we're paused, do nothing
+              console.log("timer is paused");
+            } else {
+              // If we're not paused
+              // Subtract 1 from the timer
+              timer = timer - 1;
+              console.log("timer is not 0");
+              // Get the minutes
+              var mins = Math.floor(timer / 60);
+              // Get the seconds
+              var secs = timer % 60;
+              // If the minutes are less than 10
+              if (mins < 10) {
+                // Add a 0 to the minutes
+                mins = "0" + mins;
+              }
+              // If the seconds are less than 10
+              if (secs < 10) {
+                // Add a 0 to the seconds
+                secs = "0" + secs;
+              }
+              // Set the timer text to the minutes and seconds
+              document.getElementById("timerText").innerHTML =
+                mins + ":" + secs;
+            }
+          }
+        }, 1000);
+      }
+      // When the user clicks the back button
+      document.getElementById("back").onclick = function () {
+        // Reload
+        location.reload();
+      };
+      // When the user clicks the pause button
+      document.getElementById("pause").onclick = function () {
+        // If the timer is paused
+        if (timerPaused == true) {
+          // Resume the timer
+          timerPaused = false;
+        } else {
+          // If the timer is not paused
+          // Pause the timer
+          timerPaused = true;
+        }
+      };
+    </script>
+  </body>
+</html>
