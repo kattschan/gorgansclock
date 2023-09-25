@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
   <head>
-    <title>gorgansclock v0.02 alpha</title>
+    <title>gorgansclock v0.01b alpha</title>
     <!--Responsive meta tag thing-->
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link
@@ -101,7 +101,7 @@
           console.log("interval started");
           // If the timer is 0
           if (timer == 0) {
-            var audio = new Audio("rick.mp3");
+            var audio = new Audio("vineboom.mp3");
             audio.volume = 0.4;
             audio.play();
             console.log("timer is 0");
@@ -114,7 +114,7 @@
             // Repeatedly play the vine boom sound
             var vineBoom = setInterval(function () {
               // Play the vine boom sound
-              var audio = new Audio("rick.mp3");
+              var audio = new Audio("vineboom.mp3");
               audio.volume = 0.4;
               audio.play();
               // set the timer text to red
